@@ -7,7 +7,6 @@ variable "idle_timeout" { default = "60" }
 variable "enable_deletion_protection" { default = "false" }
 variable "ip_address_type" { }
 variable "tag_name" { }
-variable "tag_environment" { }
 
 resource "aws_lb" "lb" {
 
@@ -20,7 +19,6 @@ resource "aws_lb" "lb" {
   ip_address_type               = var.ip_address_type
   tags = {
     Name                        = var.tag_name
-    Environment                 = var.tag_environment
   }
 }
 

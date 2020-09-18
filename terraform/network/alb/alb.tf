@@ -3,7 +3,7 @@ module "mediawiki-tg" {
   name                      = "mediawiki-tg"
   port                      = "8080"
   protocol                  = "HTTP"
-  vpc_id                    = data.aws_vpc.mediawiki.id
+  vpc_id                    = data.aws_vpc.default.id
   deregistration_delay      = "30"
   target_type               = "instance"
   health_check_enabled      = "true"
@@ -14,16 +14,15 @@ module "mediawiki-tg" {
   health_check_timeout      = "300"
   health_check_healthy_threshold   = "5"
   health_check_unhealthy_threshold = "2"
-  tag_name                  = "mediawiki-tg"
 
 }
 
 module "mediawiki-alb" {
-  source                    = "../../../../modules/alb"
+  source                    = "../../modules/alb"
   name                      = "mediawiki-alb"
   internal                  = "false"
   security_groups           = [data.aws_security_group.web.id]
-  subnets                   = [tbd]
+  subnets                   = [data.aws_subnet_ids.public.ids]
   idle_timeout              = "60"
   enable_deletion_protection = "true"
   ip_address_type           = "ipv4"
@@ -31,7 +30,7 @@ module "mediawiki-alb" {
 }
 
 module "mediawiki-alb_listener-http" {
-  source                    = "../../../../modules/alb_listener"
+  source                    = "../../modules/alb_listener"
   load_balancer_arn         = "${module.mediawiki-alb.alb-arn}"
   port                      = "80"
   protocol                  = "HTTP"
@@ -48,12 +47,12 @@ module "mediawiki-alb_listener-http" {
 }
 
 module "alb_listener-https" {
-  source                    = "../../../../modules/alb_listener"
+  source                    = "../../modules/alb_listener"
   load_balancer_arn         = "${module.mediawiki-alb.alb-arn}"
   port                      = "443"
   protocol                  = "HTTPS"
   ssl_policy                = "TLS-1-2-2017-01"
-  certificate_arn           = data.aws_acm_certificate.cert.arn
+  certificate_arn           = ""
   default_action_type       = "forward"
   forward_target_group_arn  = "${module.mediawiki-tg.tg-arn}"
   redirect_host             = ""

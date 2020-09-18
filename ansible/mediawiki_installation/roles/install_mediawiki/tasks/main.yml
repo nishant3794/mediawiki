@@ -51,6 +51,20 @@
     dest: /var/www
   become: true
 
+- name: Remove existing conf file
+  file:
+    path: /etc/httpd/conf/httpd.conf
+    state: absent
+  become: true
+  
+- name: Update document root
+  copy:
+    src: ../files/httpd.conf
+    dest: /etc/httpd/conf/httpd.conf
+    owner: root
+    group: root
+  become: true
+
 - name: Set permissions mediawiki
   file:
     path: /var/www/mediawiki
