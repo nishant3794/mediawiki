@@ -6,7 +6,7 @@
       "ssh_username": "ec2-user",
       "name": "mediawiki-base-image",
       "description": "Media Wiki Base Image",
-      "iam_instance_profile": "<<tbd>>"
+      "iam_instance_profile": "mediawiki-role"
     },
     "builders": [
       {
@@ -17,15 +17,15 @@
         "ssh_username": "{{user `ssh_username`}}",
         "ami_name": "{{user `name`}}",
         "iam_instance_profile": "{{user `iam_instance_profile`}}",
-        "subnet_id": "<<tbd>>",
+        "subnet_id": "subnet-0bc21093b6e6b937c",
         "force_deregister": true,
         "force_delete_snapshot": true,
-        "source_ami": "<<tbd>>",
+        "source_ami": "ami-026f33d38b6410e30",
         "tags": {
           "Name": "{{user `name`}}",
           "Created": "{{isotime \"2006-01-02\"}}",
           "Packer": true,
-          "OS_Version": "AmazonLinux",
+          "OS_Version": "Centos",
           "Release": "Latest",
           "Description": "{{user `description`}}"
         },
