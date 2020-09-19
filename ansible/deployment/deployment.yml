@@ -1,5 +1,0 @@
----
-- name: Clean existing folder
-  file:
-    state: absent
-    path: /var/www/mediawiki/
