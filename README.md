@@ -17,7 +17,7 @@ Setup code deployment using jenkins. Reference: http://jenkins.thenishant.com. P
 The code will launch new instances and the userdata will fetch the latest tar from s3 and deploy on new instances.
 
 ## Notes:
-* Using external DB(AWS RDS) to work with the wiki to make scaling work.
+* Using external DB(AWS RDS) instead of localhost for wiki to make scaling work.
 * The RDS credentials are being fetched from AWS Secrets Manager.
 * ASG Scale up will happen if/when CPU>30.
 * ASG Scale down will happen if/when CPU<29.
