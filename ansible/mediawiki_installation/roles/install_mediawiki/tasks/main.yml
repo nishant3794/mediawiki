@@ -1,6 +1,6 @@
 - name: Install Lamp server
   yum:
-    name: 
+    name:
       - unzip
       - python3-pip
       - wget
@@ -15,6 +15,11 @@
     state: latest
   become: true
 
+- name: AWS cli installation
+  pip:
+    name: awscli
+  become: true
+
 - name: Start mariadb service
   service:
     name: mariadb
@@ -27,30 +32,6 @@
     name: httpd
     enabled: yes
   become: true
-
-- name: Copy mysql script
-  copy: 
-    src: ../files/mysql_setup.sh
-    dest: /home/centos
-    owner: centos
-    group: centos
-
-- name: Mysql setup script
-  script:
-    cmd: /home/centos/mysql-setup.sh
-  become: true 
-  
-- name: Create a new database for wiki
-  mysql_db:
-    name: wikidatabase
-    state: present
-
-- name: Create wiki user in mysql
-  mysql_user:
-    name: wiki
-    password: shouldBeChanged
-    priv: 'wikidatabase.*:ALL'
-    state: present
 
 - name: Download Media Wiki
   get_url:
