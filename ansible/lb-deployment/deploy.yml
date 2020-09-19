@@ -15,7 +15,7 @@
     - name: Deregister instance from Target Group to restart Tomcat
       local_action:
         module: elb_target
-        profile: "{{ aws_profile }}"
+        profile: default
         target_group_name: "{{ TG_NAME }}"
         target_id: "{{ ansible_ec2_instance_id }}"
         aws_region: "{{ aws_region }}"
@@ -28,7 +28,7 @@
     - name: Registering instance back to Target Group
       local_action:
         module: elb_target
-        profile: "{{ aws_profile }}"
+        profile: default
         target_id: "{{ ansible_ec2_instance_id }}"
         target_group_name: "{{ TG_NAME }}"
         aws_region: "{{ aws_region }}"

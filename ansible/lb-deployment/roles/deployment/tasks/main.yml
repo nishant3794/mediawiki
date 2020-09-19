@@ -1,0 +1,55 @@
+---
+
+- name: Delete document root folder
+  file:
+    state: absent
+    path: /var/www/mediawiki
+  become: true
+
+- name: Get latest zip from s3
+  aws_s3:
+    bucket: mediawiki-deployment-zip
+    object: builds/mediawiki.tar
+    dest: /var/www/mediawiki.tar
+    mode: get
+
+- name: Extract mediawiki tar
+  unarchive:
+    src: /home/centos/mediawiki.tar
+    dest: /var/www
+  become: true
+
+- name: Rename mediawiki
+  shell: mv /var/www/mediawiki-1.34.2 /var/www/mediawiki
+  become: true
+
+- name: Get latest settings file from s3
+  aws_s3:
+    bucket: resource-softwares-files
+    object: LocalSettings.php
+    dest: /var/www/mediawiki/LocalSettings.php
+    mode: get
+
+- name: Set permissions mediawiki
+  file:
+    path: /var/www/mediawiki
+    owner: apache
+    group: apache
+  become: true
+
+- name: Set permissions settings file
+  file:
+    path: /var/www/mediawiki/LocalSettings.php
+    owner: centos
+    group: centos
+  become: true
+
+- name : Settings file setup
+  script:
+    cmd: ../files/get-secrets.sh
+    
+- name: Restart httpd
+  service:
+    name: httpd
+    state: restarted
+  become: true
