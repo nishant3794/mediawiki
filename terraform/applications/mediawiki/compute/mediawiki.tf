@@ -32,7 +32,7 @@ module "mediawiki-asg" {
   desired_capacity          = "2"
   subnets                   = data.aws_subnet_ids.private.ids
   target_group_arns         = [data.aws_lb_target_group.mediawiki.id]
-  termination_policies      = ["default"]
+  termination_policies      = ["OldestInstance"]
   suspended_processes       = []
   tag_name                  = "mediawiki-app"
   tag_BaseAmi               = data.aws_ami.mediawiki.id
