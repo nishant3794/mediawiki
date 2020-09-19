@@ -1,16 +1,16 @@
 module "mediawiki-user-data" {
-  source                    = "../../modules/user_data"
+  source                    = "../../../modules/user_data"
   app                       = "mediawiki"
 }
 
 module "mediawiki-launch-configuration" {
-  source                    = "../../modules/launch_config"
+  source                    = "../../../modules/launch-config"
   name                      = "mediawiki-lc"
   image_id                  = data.aws_ami.mediawiki.id
-  instance_type             = "t3.micro"
+  instance_type             = "t2.micro"
   iam_instance_profile      = data.aws_iam_role.mediawiki.id
-  key_name                  = "stage-environment-key"
-  security_groups           = [data.aws_security_group.frontend.id]
+  key_name                  = "mediawiki-key"
+  security_groups           = [data.aws_security_group.mediawiki.id]
   associate_public_ip_address = "false"
   user_data                 = module.mediawiki-user-data.user-data
   placement_tenancy         = "default"
@@ -21,7 +21,7 @@ module "mediawiki-launch-configuration" {
 
 
 module "mediawiki-asg" {
-  source                    = "../../modules/asg"
+  source                    = "../../../modules/asg"
   name                      = "mediawiki-asg"
   min_size                  = "2"
   max_size                  = "4"
@@ -30,7 +30,7 @@ module "mediawiki-asg" {
   health_check_grace_period = "0"
   health_check_type         = "EC2"
   desired_capacity          = "2"
-  subnets                   = [tbd]
+  subnets                   = data.aws_subnet_ids.private.ids
   target_group_arns         = [data.aws_lb_target_group.mediawiki.id]
   termination_policies      = ["default"]
   suspended_processes       = []
@@ -39,7 +39,7 @@ module "mediawiki-asg" {
 }
 
 module "mediawiki-asg-policy-up" {
-  source                    = "../../modules/asg_policy"
+  source                    = "../../../modules/asg_policy"
   adjustment_type		    = "ChangeInCapacity"
   autoscaling_group_name	= module.mediawiki-asg.asg-name
   comparison_operator		= "GreaterThanOrEqualToThreshold"
@@ -52,7 +52,7 @@ module "mediawiki-asg-policy-up" {
 }
 
 module "mediawiki-asg-policy-down" {
-  source                    = "../../modules/asg_policy"
+  source                    = "../../../modules/asg_policy"
   adjustment_type		    = "ChangeInCapacity"
   autoscaling_group_name	= module.mediawiki-asg.asg-name
   comparison_operator		= "GreaterThanOrEqualToThreshold"

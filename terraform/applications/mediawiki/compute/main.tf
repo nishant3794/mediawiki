@@ -10,8 +10,21 @@ terraform {
   }
 }
 
+data "aws_vpc" "default" {
+  tags = {
+    Name = "default"
+  }
+}
+
+data "aws_subnet_ids" "private" {
+  vpc_id = data.aws_vpc.default.id
+  tags = {
+    Privacy = "private"
+  }
+}
+
 data "aws_iam_role" "mediawiki" {
-  name = "mediawiki-iam-role"
+  name = "mediawiki-role"
 }
 
 data "aws_security_group" "mediawiki" {
@@ -27,6 +40,6 @@ data "aws_ami" "mediawiki" {
   owners = ["self"]
   filter {
     name      = "name"
-    values    = ["baseAmi-mediawiki*"]
+    values    = ["mediawiki-base-image*"]
   }
 }

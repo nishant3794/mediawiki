@@ -1,8 +1,9 @@
 #!/bin/bash
 sudo rm -rf /var/www/mediawiki
 sudo aws s3 cp s3://resource-softwares-files/mediawiki.tar /home/centos/mediawiki.tar
-sudo tar -xvf /home/centos/mediawiki.tar
-sudo mv /home/centos/mediawiki-1.34.2 /var/www/mediawiki
+sudo tar -xvf /home/centos/mediawiki.tar -C /var/www/
+sudo mv /var/www/mediawiki-1.34.2 /var/www/mediawiki
+sleep 30
 sudo aws s3 cp s3://resource-softwares-files/LocalSettings.php /var/www/mediawiki/LocalSettings.php
 sudo chown centos:centos /var/www/mediawiki/LocalSettings.php
 sudo chown apache:apache /var/www/mediawiki
@@ -15,4 +16,5 @@ sudo sed -i -e 's/dbname/'$dbname'/g' /var/www/mediawiki/LocalSettings.php
 sudo sed -i -e 's/dbserver/'$dbhost'/g' /var/www/mediawiki/LocalSettings.php
 sudo sed -i -e 's/dbuser/'$dbuser'/g' /var/www/mediawiki/LocalSettings.php
 sudo sed -i -e 's/dbpassword/'$dbpassword'/g' /var/www/mediawiki/LocalSettings.php
+sudo setsebool -P httpd_can_network_connect 1
 sudo systemctl restart httpd

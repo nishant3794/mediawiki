@@ -1,7 +1,7 @@
 module "mediawiki-tg" {
   source                    = "../../modules/target_group"
   name                      = "mediawiki-tg"
-  port                      = "8080"
+  port                      = "80"
   protocol                  = "HTTP"
   vpc_id                    = data.aws_vpc.default.id
   deregistration_delay      = "30"
@@ -9,7 +9,7 @@ module "mediawiki-tg" {
   health_check_enabled      = "true"
   health_check_interval     = "30"
   health_check_path         = "/"
-  health_check_port         = "8080"
+  health_check_port         = "80"
   health_check_protocol     = "HTTP"
   health_check_timeout      = "300"
   health_check_healthy_threshold   = "5"
@@ -22,7 +22,7 @@ module "mediawiki-alb" {
   name                      = "mediawiki-alb"
   internal                  = "false"
   security_groups           = [data.aws_security_group.web.id]
-  subnets                   = [data.aws_subnet_ids.public.ids]
+  subnets                   = ["subnet-0bc21093b6e6b937c", "subnet-ebb53490"]
   idle_timeout              = "60"
   enable_deletion_protection = "true"
   ip_address_type           = "ipv4"
