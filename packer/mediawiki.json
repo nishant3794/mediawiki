@@ -73,7 +73,7 @@
     },
     {
       "type": "ansible",
-      "playbook_file": "../ansible/mediawiki_installation.yml",
+      "playbook_file": "../ansible/mediawiki_installation/mediawiki_installation.yml",
       "ansible_env_vars": [ "ANSIBLE_HOST_KEY_CHECKING=False" ],
       "extra_arguments": [ "--extra-vars", "serial=1" ]
     }
