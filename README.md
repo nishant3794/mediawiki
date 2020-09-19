@@ -1,4 +1,4 @@
-# Snapshot Tool for Amazon RDS
+#Automating mediawiki deployment 
 
 This is a code for installing and deploying mediawiki usin **Terraform**, **Packer**, **Ansible** and **Bash**.
 
@@ -21,3 +21,4 @@ The code will launch new instances and the userdata will fetch the latest tar fr
 * The RDS credentials are being fetched from AWS Secrets Manager.
 * ASG Scale up will happen if/when CPU>30.
 * ASG Scale down will happen if/when CPU<29.
+* Ask me for credentials on Jenkins(for references)
