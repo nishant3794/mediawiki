@@ -1,6 +1,6 @@
 #!/bin/bash
 sudo rm -rf /var/www/mediawiki
-sudo aws s3 cp s3://resource-softwares-files/mediawiki.tar /home/centos/mediawiki.tar
+sudo aws s3 cp s3://deployment-zips-mediawiki/mediawiki.tar /home/centos/mediawiki.tar
 sudo tar -xvf /home/centos/mediawiki.tar -C /var/www/
 sudo mv /var/www/mediawiki-1.34.2 /var/www/mediawiki
 sleep 30
