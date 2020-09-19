@@ -1,4 +1,4 @@
-#Automating mediawiki deployment 
+# Automating mediawiki deployment 
 
 This is a code for installing and deploying mediawiki usin **Terraform**, **Packer**, **Ansible** and **Bash**.
 
