@@ -3,7 +3,7 @@
 # 2nd argument = target group Name
 # 3rd argument = final capacity
 # 4th argument = region ap-south-1
-# ./script.sh asg-name tg-arn capacity eu-central-1
+# ./script.sh asg-name tg-arn capacity region
 set +e
 retry=20
 AutoScalingGroupName=$1
@@ -26,7 +26,7 @@ echo "Adding new instances in autoscaling group!!"
 /usr/local/bin/aws autoscaling update-auto-scaling-group --region $region  --auto-scaling-group-name $AutoScalingGroupName --max-size $desiredCapacity
 /usr/local/bin/aws autoscaling update-auto-scaling-group --region $region  --auto-scaling-group-name $AutoScalingGroupName --min-size $desiredCapacity
 /usr/local/bin/aws autoscaling set-desired-capacity --region $region  --auto-scaling-group-name $AutoScalingGroupName --desired-capacity $desiredCapacity
-sleep 70
+sleep 100
 success=0
 for (( i=1; i <= $retry; i++ ))
 do
